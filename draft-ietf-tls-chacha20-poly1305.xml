@@ -18,7 +18,7 @@
   <front>
 
     <title abbrev="chacha-tls">
-      Using ChaCha20-Poly1305 in Transport Layer Security (TLS)
+       ChaCha20-Poly1305 Cipher Suites for Transport Layer Security (TLS)
     </title>
 
     <author initials="A." surname="Langley" fullname="Adam Langley">
@@ -133,16 +133,22 @@
 
       <list style="numbers">
         <t>The 64-bit record sequence number is serialized as an 8-byte, big-endian value and padded on the left with 4 zeroes.</t>
-        <t>The padded sequence number is XORed with the static client_write_iv or server_write_iv, depending on the role.</t>
+        <t>The padded sequence number is XORed with the client_write_IV (when the client is sending) or server_write_IV (when the server is sending).</t>
       </list>
+      </t>
+
+      <t>
+        In DTLS, the 64-bit seq_num is the 16-bit epoch concatenated with the 48-bit seq_num.
       </t>
 
       <t>
         This nonce construction is different from the one used with AES-GCM in
         TLS 1.2 but matches the scheme expected to be used in TLS 1.3. The
-        advantage is that no per-record, explicit nonce need be transmitted, which
-        saves eight bytes per record and prevents implementations from mistakenly
-        using a random nonce. Thus, in the terms of <xref target="RFC5246"/>,
+        nonce is constructed from the record sequence number and shared secret,
+        both of which are known to the recipient. The advantage is that no
+        per-record, explicit nonce need be transmitted, which saves eight bytes
+        per record and prevents implementations from mistakenly using a random
+        nonce. Thus, in the terms of <xref target="RFC5246"/>,
         SecurityParameters.fixed_iv_length is twelve bytes and
         SecurityParameters.record_iv_length is zero bytes.
       </t>
@@ -156,23 +162,17 @@
 
   TLS_PSK_WITH_CHACHA20_POLY1305         = {0xTBD, 0xTBD}
   TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305   = {0xTBD, 0xTBD}
+  TLS_DHE_PSK_WITH_CHACHA20_POLY1305     = {0xTBD, 0xTBD}
+  TLS_RSA_PSK_WITH_CHACHA20_POLY1305     = {0xTBD, 0xTBD}
 ]]></artwork>
       </figure>
 
-      <t>The DHE_RSA, ECDHE_RSA, ECDHE_ECDSA, PSK and
-      ECDHE_PSK key exchanges for these cipher suites are unaltered and thus are performed as defined in
+      <t>The DHE_RSA, ECDHE_RSA, ECDHE_ECDSA, PSK,
+      ECDHE_PSK, DHE_PSK and RSA_PSK key exchanges for these cipher suites are unaltered and thus are performed as defined in
       <xref target="RFC5246"/>, <xref target="RFC4492"/>, and <xref
       target="RFC5489"/>.</t>
 
       <t>The pseudorandom function (PRF) for all the cipher suites defined in this document is the TLS PRF with SHA-256 as the hash function.</t>
-    </section>
-
-    <section anchor="ack"
-             title="Acknowledgements">
-
-      <t>The authors would like to thank Zooko Wilcox-OHearn and
-      Samuel Neves.</t> <!-- for suggestions that led to this draft.</t>-->
-
     </section>
 
     <section anchor="iana" title="IANA Considerations">
@@ -183,12 +183,14 @@
 
       <figure>
         <artwork><![CDATA[
-  TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305   = {0xTBD, 0xTBD} {0xCC, 0xA1}
-  TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305 = {0xTBD, 0xTBD} {0xCC, 0xA2}
-  TLS_DHE_RSA_WITH_CHACHA20_POLY1305     = {0xTBD, 0xTBD} {0xCC, 0xA3}
+  TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305   = {0xTBD, 0xTBD} {0xCC, 0xA7}
+  TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305 = {0xTBD, 0xTBD} {0xCC, 0xA8}
+  TLS_DHE_RSA_WITH_CHACHA20_POLY1305     = {0xTBD, 0xTBD} {0xCC, 0xA9}
 
-  TLS_PSK_WITH_CHACHA20_POLY1305         = {0xTBD, 0xTBD} {0xCC, 0xA5}
-  TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305   = {0xTBD, 0xTBD} {0xCC, 0xA6}
+  TLS_PSK_WITH_CHACHA20_POLY1305         = {0xTBD, 0xTBD} {0xCC, 0xAA}
+  TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305   = {0xTBD, 0xTBD} {0xCC, 0xAB}
+  TLS_DHE_PSK_WITH_CHACHA20_POLY1305     = {0xTBD, 0xTBD} {0xCC, 0xAC}
+  TLS_RSA_PSK_WITH_CHACHA20_POLY1305     = {0xTBD, 0xTBD} {0xCC, 0xAD}
 ]]></artwork>
       </figure>
 
@@ -231,6 +233,12 @@
       </t>
     </section>
 
+    <section anchor="ack"
+             title="Acknowledgements">
+
+      <t>The authors would like to thank Zooko Wilcox-OHearn and Samuel Neves for their suggestions and guidance.</t>
+
+    </section>
   </middle>
 
   <back>
