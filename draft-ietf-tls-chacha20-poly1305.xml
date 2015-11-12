@@ -13,7 +13,7 @@
 <?rfc symrefs="yes"?>
 
 <rfc category="std" ipr="trust200902"
-    updates="5246, 6347"  docName="draft-ietf-tls-chacha20-poly1305-01">
+    updates="5246, 6347"  docName="draft-ietf-tls-chacha20-poly1305-02">
 
   <front>
 
@@ -62,7 +62,7 @@
     </author>
 
 
-    <date month="October" year="2015"/>
+    <date month="November" year="2015"/>
 
     <abstract>
 
@@ -132,7 +132,7 @@
       <t>AEAD_CHACHA20_POLY1305 requires a 96-bit nonce, which is formed as follows:
 
       <list style="numbers">
-        <t>The 64-bit record sequence number is serialized as an 8-byte, big-endian value and padded on the left with 4 zeroes.</t>
+        <t>The 64-bit record sequence number is serialized as an 8-byte, big-endian value and padded on the left with four 0x00 bytes.</t>
         <t>The padded sequence number is XORed with the client_write_IV (when the client is sending) or server_write_IV (when the server is sending).</t>
       </list>
       </t>
@@ -183,14 +183,14 @@
 
       <figure>
         <artwork><![CDATA[
-  TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305   = {0xTBD, 0xTBD} {0xCC, 0xA7}
-  TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305 = {0xTBD, 0xTBD} {0xCC, 0xA8}
-  TLS_DHE_RSA_WITH_CHACHA20_POLY1305     = {0xTBD, 0xTBD} {0xCC, 0xA9}
+  TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305   = {0xTBD, 0xTBD} {0xCC, 0xA8}
+  TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305 = {0xTBD, 0xTBD} {0xCC, 0xA9}
+  TLS_DHE_RSA_WITH_CHACHA20_POLY1305     = {0xTBD, 0xTBD} {0xCC, 0xAA}
 
-  TLS_PSK_WITH_CHACHA20_POLY1305         = {0xTBD, 0xTBD} {0xCC, 0xAA}
-  TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305   = {0xTBD, 0xTBD} {0xCC, 0xAB}
-  TLS_DHE_PSK_WITH_CHACHA20_POLY1305     = {0xTBD, 0xTBD} {0xCC, 0xAC}
-  TLS_RSA_PSK_WITH_CHACHA20_POLY1305     = {0xTBD, 0xTBD} {0xCC, 0xAD}
+  TLS_PSK_WITH_CHACHA20_POLY1305         = {0xTBD, 0xTBD} {0xCC, 0xAB}
+  TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305   = {0xTBD, 0xTBD} {0xCC, 0xAC}
+  TLS_DHE_PSK_WITH_CHACHA20_POLY1305     = {0xTBD, 0xTBD} {0xCC, 0xAD}
+  TLS_RSA_PSK_WITH_CHACHA20_POLY1305     = {0xTBD, 0xTBD} {0xCC, 0xAE}
 ]]></artwork>
       </figure>
 
@@ -226,8 +226,17 @@
       </t>
 
       <t>
-        This document should not introduce any additional security considerations
-        other than those that follow from the use of the
+        It should be noted that AEADs, such as ChaCha20-Poly1305, are not
+        intended to hide the lengths of plaintexts. When this document speaks of
+        side-channel attacks, it is not considering traffic analysis, but
+        rather timing and cache side-channels. Traffic analysis, while a valid
+        concern, is outside the scope of the AEAD and is being addressed
+        elsewhere in future versions of TLS.
+      </t>
+
+      <t>
+        Otherwise, this document should not introduce any additional security
+        considerations other than those that follow from the use of the
         AEAD_CHACHA20_POLY1305 construction, thus the reader is directed to the
         Security Considerations section of <xref target="RFC7539"/>.
       </t>
@@ -236,7 +245,7 @@
     <section anchor="ack"
              title="Acknowledgements">
 
-      <t>The authors would like to thank Zooko Wilcox-OHearn and Samuel Neves for their suggestions and guidance.</t>
+      <t>The authors would like to thank Zooko Wilcox-OHearn, Samuel Neves and Colm MacCárthaigh for their suggestions and guidance.</t>
 
     </section>
   </middle>
