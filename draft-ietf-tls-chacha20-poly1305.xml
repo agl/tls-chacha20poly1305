@@ -85,14 +85,14 @@
 
       <t><xref target="CHACHA">ChaCha</xref> is a stream cipher developed by D. J. Bernstein in 2008. It is a refinement of Salsa20, which is one of the selected ciphers in the eSTREAM portfolio <xref target="ESTREAM"/>, and was used as the core of the SHA-3 finalist, BLAKE.</t>
 
-      <t>The variant of ChaCha used in this document has 20 rounds, a 96-bit nonce and a 256 bit key, and will
+      <t>The variant of ChaCha used in this document has 20 rounds, a 96-bit nonce and a 256-bit key, and will
       be referred to as ChaCha20.
       This is the conservative variant (with respect to security) of
       the ChaCha family and is described in <xref target="RFC7539"/>.</t>
 
       <t>
         <xref target="POLY1305">Poly1305</xref> is a Wegman-Carter, one-time authenticator
-        designed by D. J. Bernstein. Poly1305 takes a 32-byte, one-time key and a message,
+        designed by D. J. Bernstein. Poly1305 takes a 256-bit, one-time key and a message,
         and produces a 16-byte tag that authenticates the message such that an attacker has
         a negligible chance of producing a valid tag for an inauthentic message.
         It is also described in <xref target="RFC7539"/>.
